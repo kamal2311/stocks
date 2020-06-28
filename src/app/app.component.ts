@@ -21,38 +21,45 @@ export class AppComponent {
   }
 
   fetchData(symbol: string): void {
-    this.fetStocksDataFromAPI(symbol);
-  }
 
-  private fetStocksDataFromAPI(symbol: string) {
+    const url = this.buildUrl(symbol);
 
-    const url = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${this.apiKey}`;
     const handleData = (data: Object): void => {
 
       if (data[0]) {
         this.company = data[0];
       }
       else {
-        this.showSnackBar("No data found or API Key is invalid");
+        this.showSnackBar("No data found");
       }
     };
+
     const handleErrors: (error: any) => void =
       error => {
-        this.showSnackBar("There was an error fetching data.");
+        console.error(error);
+        this.showSnackBar("There was an error fetching data");
       };
+
     this.http.get(url)
       .subscribe(handleData,
         handleErrors
       );
+  }  
+
+  private buildUrl(symbol: string) {
+    return `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${this.apiKey}`;
   }
 
-  setApiKey(key: string) {
+  setApiKey(key: string = "") {
 
-    sessionStorage.setItem('stocksApiKey', key);
-    if (!this.apiKey) {
-      this.apiKey = key;
-      this.showSnackBar("API Key is set");
+    if (key.length !== 32) {
+      this.showSnackBar("API Key seems to be invalid");
+      return;
     }
+
+    this.apiKey = key;
+    sessionStorage.setItem('stocksApiKey', key);
+    this.showSnackBar("API Key is set");
 
   }
 
