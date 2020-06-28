@@ -1,48 +1,50 @@
 <div class="main">
-    <div class="title">{{ title}}</div>
-    <header>
+    <div *ngIf="!apiKey">
         <p>
             <mat-form-field appearance="standard">
-                <mat-label>Stock symbol</mat-label>
-                <input #stockName matInput placeholder="AAPL">
-            </mat-form-field>
-            <button mat-button color="primary" (click)="fetchData(stockName.value)">Enter</button>
+                <mat-label>API Key</mat-label>
+                <input #apiKey matInput>
+            </mat-form-field>            
+            <button mat-button color="primary" (click)="setApiKey(apiKey.value)">Set API Key</button>
         </p>
-    </header>
-    <mat-card class="example-card" *ngIf="company">
-        <mat-card-header>
-            <div mat-card-avatar [ngStyle]="{
+        <p>Refer to <a href="https://financialmodelingprep.com/developer/docs/">API documentation</a> to create
+            an API key </p>
+    </div>
+    <div class="content" *ngIf="apiKey">
+        <div class="title">{{ title}}</div>
+        <header>
+            <p>
+                <mat-form-field appearance="standard">
+                    <mat-label>Stock Symbol</mat-label>
+                    <input #stockName matInput placeholder="AAPL">
+                </mat-form-field>
+                <button mat-button color="primary" (click)="fetchData(stockName.value)">Enter</button>
+            </p>
+        </header>
+        <mat-card class="example-card" *ngIf="company">
+            <mat-card-header>
+                <div mat-card-avatar [ngStyle]="{
                 'background-image': (company.image) ? 'url(' + company.image + ')' : '',
                 'background-size': 'cover'         
             }"></div>
-            <mat-card-title>{{ company.symbol }}</mat-card-title>
-            <mat-card-subtitle>{{ company.companyName }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <h3>Price</h3>
-            <p [ngClass]="{
+                <mat-card-title>{{ company.symbol }}</mat-card-title>
+                <mat-card-subtitle>{{ company.companyName }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <h3>Price</h3>
+                <p [ngClass]="{
                 'positive': company.changes > 0,
                 'negative': company.changes < 0                
              }">{{ company.price | currency }}</p>
-            <h3>Changes</h3>
-            <p>{{ company.changes }}</p>
-            <h3>Website</h3>
-            <p><a href="{{ company.website}}"> {{ company.website}} </a> </p>
-            <h3> Description </h3>
-            <p>
-                {{company.description}}
-            </p>
-        </mat-card-content>
-    </mat-card>
-    <div *ngIf="!apiKey" class="centered">
-        <p>
-            <mat-form-field appearance="standard">
-                <mat-label>API key</mat-label>
-                <input #apiKey matInput>
-            </mat-form-field>
-            <button mat-button color="primary" (click)="setApiKey(apiKey.value)">Set API Key</button>
-            <span>Refer to <a href="https://financialmodelingprep.com/developer/docs/">API documentation</a> to create
-                an API key </span>
-        </p>
+                <h3>Changes</h3>
+                <p>{{ company.changes }}</p>
+                <h3>Website</h3>
+                <p><a href="{{ company.website}}"> {{ company.website}} </a> </p>
+                <h3> Description </h3>
+                <p>
+                    {{company.description}}
+                </p>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>

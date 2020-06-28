@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -8,36 +8,58 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  
-  title = 'The Stocks App';  
-  company = null;
-  apiKey: any;
-  
-  constructor(private http: HttpClient, private snackBar: MatSnackBar){ }
-  
-  fetchData(symbol:string): void {
 
-    if (!this.apiKey) {
-        this.snackBar.open("Please create and set an API key","Dismiss");
-    }   
-    
-    this.http.get(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${this.apiKey}`)
-      .subscribe( data => {
-          this.company = data[0];    
-      },
-        error => {
-          this.snackBar.open("Invalid stock symbol or no data found");
-        }
+  title = 'The Stocks App';
+  company = null;
+  apiKey: string = null;
+
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+    const storedKey = sessionStorage.getItem("stocksApiKey");
+    if (storedKey) {
+      this.apiKey = storedKey;
+    }
+  }
+
+  fetchData(symbol: string): void {
+    this.fetStocksDataFromAPI(symbol);
+  }
+
+  private fetStocksDataFromAPI(symbol: string) {
+
+    const url = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${this.apiKey}`;
+    const handleData = (data: Object): void => {
+
+      if (data[0]) {
+        this.company = data[0];
+      }
+      else {
+        this.showSnackBar("No data found");
+      }
+    };
+    const handleErrors: (error: any) => void =
+      error => {
+        this.showSnackBar("There was an error fetching data.");
+      };
+    this.http.get(url)
+      .subscribe(handleData,
+        handleErrors
       );
   }
 
-  setApiKey(key: string){
-    if (key){
-      this.apiKey = key;    
+  setApiKey(key: string) {
+
+    sessionStorage.setItem('stocksApiKey', key);
+    if (!this.apiKey) {
+      this.apiKey = key;
+      this.showSnackBar("APIKey set!");
     }
-    this.snackBar.open("APIKey set!","Dismiss",
-    {
-      duration: 2000,
-    });
+
+  }
+
+  private showSnackBar(message: string) {
+    this.snackBar.open(message, "Dismiss",
+      {
+        duration: 2000,
+      });
   }
 }
