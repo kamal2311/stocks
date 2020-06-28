@@ -1,0 +1,30 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+div.title {
+    margin: auto;    
+}
+
+header {
+    margin: auto;
+}
+.content {
+    display: flex;
+}
+
+.example-card {
+    max-width: 600px;
+    margin: auto;
+  }
+
+  .positive {
+      color: green;
+  }
+
+  .negative {
+      color: red;
+  }
+
