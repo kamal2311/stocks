@@ -33,7 +33,7 @@ export class AppComponent {
         this.company = data[0];
       }
       else {
-        this.showSnackBar("No data found");
+        this.showSnackBar("No data found or API Key is invalid");
       }
     };
     const handleErrors: (error: any) => void =
@@ -51,7 +51,7 @@ export class AppComponent {
     sessionStorage.setItem('stocksApiKey', key);
     if (!this.apiKey) {
       this.apiKey = key;
-      this.showSnackBar("APIKey set!");
+      this.showSnackBar("API Key is set");
     }
 
   }
@@ -59,7 +59,8 @@ export class AppComponent {
   private showSnackBar(message: string) {
     this.snackBar.open(message, "Dismiss",
       {
-        duration: 2000,
+        duration: 3000,
+        verticalPosition: 'top'
       });
   }
 }

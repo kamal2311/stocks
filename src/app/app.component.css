@@ -1,13 +1,29 @@
 .main {
     display: flex;
-    flex-direction: column;
-    padding: 20px;    
-    margin: auto;
-    width: 600px;
+    flex-direction: column;    
+    width: 100%;        
+}
+
+div.title {    
+    height: 45px;
+    background-color: #1976d2;
+    color: white;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.primary-button {
+    background-color: #1976d2;
+    color: white;
 }
 
 .content {
     width: 600px;
+    margin: auto;
+    padding: 16px;
 }
 
 .positive {

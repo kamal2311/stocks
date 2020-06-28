@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v2-beta
+      with:
+          node-version: 12
+
+    - name: Build Angular App
+      run: |
+        npm install # Install Dependencies
+        CI=false npm run build --prod # CI=false to ignore warnings
+
+    - name: Run unit tests
+      run: |
+        npm run test
+
+    - name: Install Surge
+      run: npm install -g surge
+
+    - name: Deploy to Surge
+      run:  surge ./dist/stocks/ ${{ secrets.SURGE_DOMAIN }} --token ${{secrets.SURGE_TOKEN}}

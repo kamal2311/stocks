@@ -1,24 +1,24 @@
 <div class="main">
-    <div *ngIf="!apiKey">
+    <div class="title">{{ title}}</div>
+    <div class= "content" *ngIf="!apiKey">
         <p>
             <mat-form-field appearance="standard">
                 <mat-label>API Key</mat-label>
                 <input #apiKey matInput>
-            </mat-form-field>            
-            <button mat-button color="primary" (click)="setApiKey(apiKey.value)">Set API Key</button>
+            </mat-form-field>&nbsp;            
+            <button mat-button class="primary-button" (click)="setApiKey(apiKey.value)">Set API Key</button>
         </p>
-        <p>Refer to <a href="https://financialmodelingprep.com/developer/docs/">API documentation</a> to create
+        <p>Refer to <a href="https://financialmodelingprep.com/developer/docs/" target="_blank">API documentation</a> to create
             an API key </p>
     </div>
-    <div class="content" *ngIf="apiKey">
-        <div class="title">{{ title}}</div>
+    <div class="content" *ngIf="apiKey">        
         <header>
             <p>
                 <mat-form-field appearance="standard">
                     <mat-label>Stock Symbol</mat-label>
                     <input #stockName matInput placeholder="AAPL">
-                </mat-form-field>
-                <button mat-button color="primary" (click)="fetchData(stockName.value)">Enter</button>
+                </mat-form-field>&nbsp;
+                <button mat-button class="primary-button" (click)="fetchData(stockName.value)">Enter</button>
             </p>
         </header>
         <mat-card class="example-card" *ngIf="company">
@@ -39,7 +39,7 @@
                 <h3>Changes</h3>
                 <p>{{ company.changes }}</p>
                 <h3>Website</h3>
-                <p><a href="{{ company.website}}"> {{ company.website}} </a> </p>
+                <p><a href="{{ company.website}}" target="_blank"> {{ company.website}} </a> </p>
                 <h3> Description </h3>
                 <p>
                     {{company.description}}
