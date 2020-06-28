@@ -21,10 +21,6 @@ jobs:
         npm install # Install Dependencies
         CI=false npm run build --prod # CI=false to ignore warnings
 
-    - name: Setup unit test browser environment
-      run: |
-        npm install puppeteer --save-dev
-
     - name: Run unit tests
       run: |
         npm run test
