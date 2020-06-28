@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -10,15 +11,33 @@ export class AppComponent {
   
   title = 'The Stocks App';  
   company = null;
+  apiKey: any;
   
-  constructor(private http: HttpClient){ }
+  constructor(private http: HttpClient, private snackBar: MatSnackBar){ }
   
   fetchData(symbol:string): void {
-    const personalApiKey = 'bd8b2faefb549144a3744ef43a52e50e';
+
+    if (!this.apiKey) {
+        this.snackBar.open("Please create and set an API key","Dismiss");
+    }   
     
-    this.http.get(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${personalApiKey}`)
+    this.http.get(`https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${this.apiKey}`)
       .subscribe( data => {
           this.company = data[0];    
-      });
+      },
+        error => {
+          this.snackBar.open("Invalid stock symbol or no data found");
+        }
+      );
+  }
+
+  setApiKey(key: string){
+    if (key){
+      this.apiKey = key;    
+    }
+    this.snackBar.open("APIKey set!","Dismiss",
+    {
+      duration: 2000,
+    });
   }
 }

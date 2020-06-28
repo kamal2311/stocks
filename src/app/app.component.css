@@ -11,6 +11,10 @@ div.title {
 header {
     margin: auto;
 }
+
+.centered {
+    margin: auto;
+}
 .content {
     display: flex;
 }
