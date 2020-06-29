@@ -29,6 +29,9 @@ export class AppComponent {
       if (data[0]) {
         this.company = data[0];
       }
+      else if (data["Error Message"]){
+        this.showSnackBar(data["Error Message"]);
+      }
       else {
         this.showSnackBar("No data found");
       }
